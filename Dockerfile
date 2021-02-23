@@ -6,7 +6,7 @@ COPY . .
 RUN mvn -f pom.xml clean package 
 
 # Release Image
-FROM openjdk:15-jdk AS release
+FROM adoptopenjdk:15.0.2_7-jre-hotspot-focal AS release
 COPY --from=build /build/target/*.jar /app.jar
 
 COPY docker-entrypoint.sh /
