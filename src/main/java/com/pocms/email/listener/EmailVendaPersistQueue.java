@@ -1,6 +1,7 @@
 package com.pocms.email.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pocms.email.config.AmqpConfig;
 import com.pocms.email.dto.VendaDto;
 import com.pocms.email.model.Email;
 import com.pocms.email.model.Rotina;
@@ -34,7 +35,7 @@ public class EmailVendaPersistQueue {
         this.freemarkerConfiguration = freemarkerConfiguration;
     }
 
-    @RabbitListener(queues = "queue.email.venda.persist")
+    @RabbitListener(queues = AmqpConfig.QUEUE_EMAIL_VENDA)
     public void consumer(String json) {
         try {
             var venda = objectMapper.readValue(json, VendaDto.class);
