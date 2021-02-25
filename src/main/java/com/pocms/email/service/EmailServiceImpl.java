@@ -28,44 +28,49 @@ public class EmailServiceImpl implements EmailService {
 	@Value("${mail.from}")
 	private String from;
 
+	@Value("${mail.fake}")
+	private boolean mailFake;
+
 	public EmailServiceImpl(EmailRepository repository) {
 		this.repository = repository;
 	}
 
 	@Override
 	public void send(Email email) {
-		String host = "smtp.mail.yahoo.com";
-		Properties properties = System.getProperties();
+		if (!mailFake) {
+			String host = "smtp.mail.yahoo.com";
+			Properties properties = System.getProperties();
 
-		properties.put("mail.smtp.host", host);
-		properties.put("mail.smtp.port", "587");
-		properties.put("mail.smtp.starttls.enable", "true");
-		properties.put("mail.smtp.auth", "true");
+			properties.put("mail.smtp.host", host);
+			properties.put("mail.smtp.port", "587");
+			properties.put("mail.smtp.starttls.enable", "true");
+			properties.put("mail.smtp.auth", "true");
 
-		Session session = Session.getInstance(properties, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(
-						username,
-						password
-				);
+			Session session = Session.getInstance(properties, new Authenticator() {
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(
+							username,
+							password
+					);
+				}
+			});
+
+			session.setDebug(true);
+			try {
+				MimeMessage message = new MimeMessage(session);
+
+				message.setFrom(new InternetAddress(from));
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(email.getEmail()));
+				message.setSubject(email.getTitulo());
+				message.setContent(email.getConteudo(), "text/html");
+
+				LOGGER.info("Enviando e-mail...");
+				Transport.send(message);
+				repository.save(email);
+				LOGGER.info("E-mail enviado com sucesso");
+			} catch (MessagingException e) {
+				LOGGER.error("Erro ao enviar email", e);
 			}
-		});
-
-		session.setDebug(true);
-		try {
-			MimeMessage message = new MimeMessage(session);
-
-			message.setFrom(new InternetAddress(from));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email.getEmail()));
-			message.setSubject(email.getTitulo());
-			message.setContent(email.getConteudo(), "text/html");
-
-			LOGGER.info("Enviando e-mail...");
-			Transport.send(message);
-			repository.save(email);
-			LOGGER.info("E-mail enviado com sucesso");
-		} catch (MessagingException e) {
-			LOGGER.error("Erro ao enviar email", e);
 		}
 	}
 
