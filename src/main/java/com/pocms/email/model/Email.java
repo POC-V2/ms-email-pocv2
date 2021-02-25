@@ -1,22 +1,39 @@
 package com.pocms.email.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.NonNull;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Document("EMAIL_VENDA")
-public class Email {
+@Entity
+@Table(name = "EMAIL")
+public class Email implements Serializable {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    private Long id;
+
+    @Column(name = "FK", nullable = false)
     private Long fk;
+
+    @Column(name = "EMAIL", nullable = false)
     private String email;
+
+    @Column(name = "DATA", nullable = false)
     private LocalDateTime data;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "ROTINA", nullable = false)
     private Rotina rotina;
+
+    @Column(name = "TITULO", nullable = false)
     private String titulo;
+
+    @Lob
+    @Column(name = "CONTEUDO", nullable = false)
     private String conteudo;
 
     @Deprecated
@@ -37,7 +54,7 @@ public class Email {
         this.data = LocalDateTime.now();
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
