@@ -11,7 +11,7 @@
 
 	<groupId>com.pocms</groupId>
 	<artifactId>email</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>email</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -100,10 +100,6 @@
 						<image>poc-ms/email:${version}</image>
 					</to>
 					<container>
-						<jvmFlags>
-							<jvmFlag>-Xms256m</jvmFlag>
-							<jvmFlag>-Xmx512m</jvmFlag>
-						</jvmFlags>
 						<mainClass>com.pocms.email.EmailApplication</mainClass>
 					</container>
 				</configuration>
