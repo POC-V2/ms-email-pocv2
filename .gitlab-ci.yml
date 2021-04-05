@@ -10,11 +10,11 @@ variables:
   DOCKER_TLS_CERTDIR: ""
 
 before_script:
-    - apk add --update --no-cache build-base python3-dev python3 libffi-dev libressl-dev bash  gettext curl git
+    - apk add --update --no-cache build-base python3-dev python3 libffi-dev libressl-dev bash rust cargo gettext curl git
     - CI_COMMIT_SHORT_SHA=$(git rev-parse --short HEAD)
     - curl -O https://bootstrap.pypa.io/get-pip.py
-    - python3 get-pip.py 
-    - pip install --upgrade six awscli awsebcli
+    - python3 get-pip.py
+    - pip install --upgrade pip six awscli awsebcli cryptography
     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 592268041915.dkr.ecr.us-east-1.amazonaws.com
     
 services:
