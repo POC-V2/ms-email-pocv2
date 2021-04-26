@@ -19,6 +19,8 @@
         <javax.mail.version>1.6.2</javax.mail.version>
         <spring-context-support.version>5.3.1</spring-context-support.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
+        <sonar.organization>poc-v2</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
     <dependencies>
